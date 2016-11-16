@@ -1,19 +1,23 @@
 public class Run {
 
 	public static void main(String[] args) {
-
-		double best = 1000;
-
-		for (int i = 0; i < 1000; i++) {
-			AlbumPhoto a = new AlbumPhoto(55);
-			double t = a.hillClimberFirstImprovement(10000);
-
-			if (t < best) {
-				best = t;
-			}
-		}
-		System.out.println(best);
+//
+//		double best = 1000;
+//
+//		for (int i = 0; i < 1000; i++) {
+//			AlbumPhoto a = new AlbumPhoto(55);
+//			double t = a.hillClimberFirstImprovement(10000);
+//
+//			if (t < best) {
+//				best = t;
+//			}
+//		}
+//		System.out.println(best);
 		
-		
+		AlbumPhoto b = new AlbumPhoto(55);
+		int nb_parents = 5;
+		int nb_geniteur = 2;
+		int nb_generations = 2;
+		b.algoEvolutionnaire(nb_parents, nb_geniteur, nb_generations);;
 	}
 }
