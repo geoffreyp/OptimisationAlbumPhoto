@@ -1,15 +1,13 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import tools.HillClimber;
 
 public class AlbumPhoto extends LocalSearchAlgorithm {
 
@@ -22,57 +20,7 @@ public class AlbumPhoto extends LocalSearchAlgorithm {
 		super(debug);
 		computeDistances(photoFileName, albumFileName);
 		this.nb_photos = taille;
-		solution = generateShuffleSolution(taille);
-	}
-
-	public AlbumPhoto(int[] solution, boolean debug) {
-		super(debug);
-		computeDistances(photoFileName, albumFileName);
-		this.solution = new int[solution.length];
-		for (int i = 0; i < solution.length; i++)
-			this.solution[i] = solution[i];
-	}
-
-	@Override
-	protected int[] generateShuffleSolution(int taille) {
-		int[] solution = new int[taille];
-		for (int i = 0; i < taille; i++)
-			solution[i] = i;
-
-		List<Integer> s = new ArrayList<>();
-		for (int i = 0; i < solution.length; i++)
-			s.add(i, solution[i]);
-
-		Collections.shuffle(s);
-		for (int i = 0; i < solution.length; i++)
-			solution[i] = s.get(i);
-
-		return solution;
-	}
-
-	@Override
-	public int[] getRandomNeighbor() {
-		Random r = new Random();
-		int indice1 = r.nextInt(solution.length);
-		int indice2 = r.nextInt(solution.length);
-
-		int[] neighbor = new int[solution.length];
-		for (int i = 0; i < solution.length; i++)
-			neighbor[i] = solution[i];
-
-		neighbor[indice1] = solution[indice2];
-		neighbor[indice2] = solution[indice1];
-
-		return neighbor;
-	}
-
-	@Override
-	public String toString() {
-		String res = "";
-		for (int i = 0; i < solution.length; i++)
-			res += solution[i] + " ";
-
-		return res;
+		solution = HillClimber.generateShuffleSolution(taille);
 	}
 
 	/**

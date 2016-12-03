@@ -1,6 +1,7 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
+import java.util.function.Function;
+
+import tools.EvolutionaryAlgorithm;
+import tools.HillClimber;
 
 public abstract class LocalSearchAlgorithm {
 	protected int[]				solution;
@@ -13,26 +14,9 @@ public abstract class LocalSearchAlgorithm {
 
 	public abstract double eval(int[] solution);
 
-	public abstract int[] getRandomNeighbor();
-	
-	public int[] getSolution() {
-		return solution;
-	}
-
-	public void setSolution(int[] sol) {
-		this.solution = new int[sol.length];
-		for (int i = 0; i < this.solution.length; i++) {
-			this.solution[i] = sol[i];
-		}
-	}
-
-	protected abstract int[] generateShuffleSolution(int taille);
-
 	/**
 	 * @author Geoffrey Pruvost
-	 * @param nbEvalMax:
-	 *            nb of maximum evaluations
-	 * @return double value : the best evaluation
+	 * @return the best solution
 	 */
 	public int[] hillClimberFirstImprovement(int nbEvalMax) {
 		double eval = eval(solution);
@@ -46,7 +30,7 @@ public abstract class LocalSearchAlgorithm {
 
 			do {
 				nbEval++;
-				neighbor = getRandomNeighbor();
+				neighbor = HillClimber.getRandomNeighbor(solution);
 				double eval_neighbor = eval(neighbor);
 
 				if (eval_neighbor < best_eval_neighbor) {
@@ -60,19 +44,22 @@ public abstract class LocalSearchAlgorithm {
 				solution = neighbor;
 			}
 		}
-		if(isDebugEnabled)
-			System.out.println("________HC eval = "+eval);
+		if (isDebugEnabled)
+			System.out.println("________HC eval = " + eval);
 
 		return solution;
 	}
 
+	/**
+	 * @author Geoffrey Pruvost
+	 */
 	public void algoEvolutionnaire(int nb_parents, int nb_geniteur, int nb_generations) {
 		int[][] parents = new int[nb_parents][nb_photos];
 		double[] evaluationParents = new double[nb_parents];
 		String strEvalParents = "";
 
 		for (int i = 0; i < nb_parents; i++) {
-			parents[i] = generateShuffleSolution(nb_photos);
+			parents[i] = HillClimber.generateShuffleSolution(nb_photos);
 			evaluationParents[i] = eval(parents[i]);
 			strEvalParents += "[" + i + "]=" + evaluationParents[i] + " ";
 		}
@@ -80,15 +67,20 @@ public abstract class LocalSearchAlgorithm {
 		int generation = 0;
 		while (generation < nb_generations) {
 			generation++;
-			
+
 			if (isDebugEnabled) {
 				System.out.println("\nGénération.... :" + generation);
 				System.out.println("Parents....... :" + strEvalParents);
 			}
-			
-			int[][] geniteurs = getGeniteurs(evaluationParents, nb_geniteur, parents);
 
-			int[][] enfants = getEnfants(geniteurs);
+			int[][] geniteurs = EvolutionaryAlgorithm.getGeniteurs(evaluationParents, nb_geniteur, parents, nb_photos);
+
+			Function<int[], int[]> hc = (enfant) ->{
+				setSolution(enfant);
+				return hillClimberFirstImprovement(10000);
+			};
+			
+			int[][] enfants = EvolutionaryAlgorithm.getEnfantsAvecVariation(geniteurs, nb_photos, hc);
 
 			if (isDebugEnabled) {
 				double[] evaluationEnfants = new double[enfants.length];
@@ -99,8 +91,11 @@ public abstract class LocalSearchAlgorithm {
 				}
 				System.out.println("Enfants....... :" + strEvalEnfants);
 			}
+			Function<int[], Double> eval = (i) -> {
+				return eval(i);
+			};
 
-			parents = getSurvivants(parents, enfants);
+			parents = EvolutionaryAlgorithm.getSurvivants(parents, enfants, nb_photos, eval);
 
 			strEvalParents = "";
 			for (int i = 0; i < parents.length; i++) {
@@ -109,110 +104,18 @@ public abstract class LocalSearchAlgorithm {
 			}
 		}
 	}
-
-	/**
-	 * Sélection des géniteurs en effectuant des tournois
-	 */
-	private int[][] getGeniteurs(double[] evalParents, int nb_geniteur, int[][] parents) {
-		int[][] geniteurs = new int[nb_geniteur][nb_photos];
-
-		for (int i = 0; i < nb_geniteur; i++) {
-			int parent1 = new Random().nextInt(evalParents.length);
-			int parent2 = new Random().nextInt(evalParents.length);
-
-			double evalP1 = evalParents[parent1];
-			double evalP2 = evalParents[parent2];
-
-			// Tournoi
-			if (evalP1 < evalP2) {
-				for (int j = 0; j < parents[parent1].length; j++) {
-					geniteurs[i][j] = parents[parent1][j];
-				}
-			}
-			else {
-				for (int j = 0; j < parents[parent2].length; j++) {
-					geniteurs[i][j] = parents[parent2][j];
-				}
-			}
-		}
-
-		return geniteurs;
+	
+	/* Getters / Setters */
+	public int[] getSolution() {
+		return solution;
 	}
 
-	/**
-	 * generation des enfants en effectuant une mutation + un Hill Climber
-	 */
-	private int[][] getEnfants(int[][] geniteurs) { // TODO WIP
-		int[][] enfants = new int[geniteurs.length][nb_photos];
-		for (int i = 0; i < geniteurs.length; i++) {
-			for (int j = 0; j < geniteurs[i].length; j++) {
-				enfants[i][j] = geniteurs[i][j];
-			}
-		}
-
-		mutation(enfants);
-
-		// hc
-		for (int i = 0; i < enfants.length; i++) {
-			setSolution(enfants[i]);
-			enfants[i] = hillClimberFirstImprovement(10000);
-		}
-
-		return enfants;
-	}
-
-	private void mutation(int[][] enfants) {
-		// mutations (memetic EA) : variations mutation (on a n = (54*55)/2
-		// mutations possible avec 55 photos)
-		// la proba de faire une mutation est donc de 1/n , on aura au moins une
-		// chance de faire une mutation, voir plus
-		Random r = new Random();
-		
-		for (int i = 0; i < enfants.length; i++) {
-			int indice1 = r.nextInt(solution.length);
-			int indice2 = r.nextInt(solution.length);
-			int temp = enfants[i][indice1];
-			
-			enfants[i][indice1] = enfants[i][indice2];
-			enfants[i][indice2] = temp;
+	public void setSolution(int[] sol) {
+		this.solution = new int[sol.length];
+		for (int i = 0; i < this.solution.length; i++) {
+			this.solution[i] = sol[i];
 		}
 	}
 
-	/**
-	 * Sélection des survivants : les mu meilleurs parents+enfants
-	 */
-	private int[][] getSurvivants(int[][] parents, int[][] enfants) {
-		int[][] parentsEtEnfants = new int[parents.length + enfants.length][nb_photos];
 
-		for (int i = 0; i < parents.length; i++) {
-			for (int j = 0; j < parents[i].length; j++) {
-				parentsEtEnfants[i][j] = parents[i][j];
-			}
-		}
-
-		for (int i = parents.length; i < parentsEtEnfants.length; i++) {
-			for (int j = 0; j < enfants[i - parents.length].length; j++) {
-				parentsEtEnfants[i][j] = enfants[i - parents.length][j];
-			}
-		}
-
-		Arrays.sort(parentsEtEnfants, new Comparator<int[]>() {
-			@Override
-			public int compare(int[] o1, int[] o2) {
-				if (eval(o1) < eval(o2))
-					return -1;
-				else
-					return 1;
-			}
-		});
-
-		int[][] newParents = new int[parents.length][nb_photos];
-		for (int i = 0; i < newParents.length; i++) {
-			for (int j = 0; j < newParents[i].length; j++) {
-				newParents[i][j] = parentsEtEnfants[i][j];
-			}
-		}
-
-		return newParents;
-	}
 }
