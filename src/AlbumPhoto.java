@@ -18,13 +18,15 @@ public class AlbumPhoto extends LocalSearchAlgorithm {
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
-	public AlbumPhoto(int taille) {
+	public AlbumPhoto(int taille, boolean debug) {
+		super(debug);
 		computeDistances(photoFileName, albumFileName);
 		this.nb_photos = taille;
 		solution = generateShuffleSolution(taille);
 	}
 
-	public AlbumPhoto(int[] solution) {
+	public AlbumPhoto(int[] solution, boolean debug) {
+		super(debug);
 		computeDistances(photoFileName, albumFileName);
 		this.solution = new int[solution.length];
 		for (int i = 0; i < solution.length; i++)
@@ -62,14 +64,6 @@ public class AlbumPhoto extends LocalSearchAlgorithm {
 		neighbor[indice2] = solution[indice1];
 
 		return neighbor;
-	}
-
-	public int[] getSolution() {
-		return solution;
-	}
-
-	public void setSolution(int[] solution) {
-		this.solution = solution;
 	}
 
 	@Override

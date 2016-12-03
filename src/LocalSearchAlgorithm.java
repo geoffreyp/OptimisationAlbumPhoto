@@ -3,12 +3,28 @@ import java.util.Comparator;
 import java.util.Random;
 
 public abstract class LocalSearchAlgorithm {
-	protected int[]	solution;
-	protected int	nb_photos;
+	protected int[]				solution;
+	protected int				nb_photos;
+	protected static boolean	isDebugEnabled;
+
+	public LocalSearchAlgorithm(boolean b) {
+		isDebugEnabled = b;
+	}
 
 	public abstract double eval(int[] solution);
 
 	public abstract int[] getRandomNeighbor();
+	
+	public int[] getSolution() {
+		return solution;
+	}
+
+	public void setSolution(int[] sol) {
+		this.solution = new int[sol.length];
+		for (int i = 0; i < this.solution.length; i++) {
+			this.solution[i] = sol[i];
+		}
+	}
 
 	protected abstract int[] generateShuffleSolution(int taille);
 
@@ -18,7 +34,7 @@ public abstract class LocalSearchAlgorithm {
 	 *            nb of maximum evaluations
 	 * @return double value : the best evaluation
 	 */
-	public double hillClimberFirstImprovement(int nbEvalMax) {
+	public int[] hillClimberFirstImprovement(int nbEvalMax) {
 		double eval = eval(solution);
 		double best_eval_neighbor = 100;
 		int nbEval = 0;
@@ -44,8 +60,10 @@ public abstract class LocalSearchAlgorithm {
 				solution = neighbor;
 			}
 		}
+		if(isDebugEnabled)
+			System.out.println("________HC eval = "+eval);
 
-		return eval;
+		return solution;
 	}
 
 	public void algoEvolutionnaire(int nb_parents, int nb_geniteur, int nb_generations) {
@@ -62,22 +80,25 @@ public abstract class LocalSearchAlgorithm {
 		int generation = 0;
 		while (generation < nb_generations) {
 			generation++;
-			System.out.println("\nGénération.... :" + generation);
-			System.out.println("Parents....... :" + strEvalParents);
-
+			
+			if (isDebugEnabled) {
+				System.out.println("\nGénération.... :" + generation);
+				System.out.println("Parents....... :" + strEvalParents);
+			}
+			
 			int[][] geniteurs = getGeniteurs(evaluationParents, nb_geniteur, parents);
 
-			int[][] enfants = variations(geniteurs);
+			int[][] enfants = getEnfants(geniteurs);
 
-			// evaluation des enfants TODO utilisé pour débugguer, inutile sinon
-			// : a supprimer
-			double[] evaluationEnfants = new double[enfants.length];
-			String strEvalEnfants = "";
-			for (int i = 0; i < enfants.length; i++) {
-				evaluationEnfants[i] = eval(enfants[i]);
-				strEvalEnfants += "[" + i + "]=" + evaluationEnfants[i] + " ";
+			if (isDebugEnabled) {
+				double[] evaluationEnfants = new double[enfants.length];
+				String strEvalEnfants = "";
+				for (int i = 0; i < enfants.length; i++) {
+					evaluationEnfants[i] = eval(enfants[i]);
+					strEvalEnfants += "[" + i + "]=" + evaluationEnfants[i] + " ";
+				}
+				System.out.println("Enfants....... :" + strEvalEnfants);
 			}
-			System.out.println("Enfants....... :" + strEvalEnfants);
 
 			parents = getSurvivants(parents, enfants);
 
@@ -118,15 +139,43 @@ public abstract class LocalSearchAlgorithm {
 		return geniteurs;
 	}
 
-	private int[][] variations(int[][] geniteurs) { // TODO WIP
-		int[][] enfants = geniteurs;
-		// mutations (memetic EA) : variations mutation (on a n = (54*55)/2
-		// mutations
-		// possible avec 55 photos) la proba de faire une mutation est donc de
-		// 1/n , on aura au moins une chance de faire une mutation, voir plus
+	/**
+	 * generation des enfants en effectuant une mutation + un Hill Climber
+	 */
+	private int[][] getEnfants(int[][] geniteurs) { // TODO WIP
+		int[][] enfants = new int[geniteurs.length][nb_photos];
+		for (int i = 0; i < geniteurs.length; i++) {
+			for (int j = 0; j < geniteurs[i].length; j++) {
+				enfants[i][j] = geniteurs[i][j];
+			}
+		}
+
+		mutation(enfants);
+
 		// hc
+		for (int i = 0; i < enfants.length; i++) {
+			setSolution(enfants[i]);
+			enfants[i] = hillClimberFirstImprovement(10000);
+		}
 
 		return enfants;
+	}
+
+	private void mutation(int[][] enfants) {
+		// mutations (memetic EA) : variations mutation (on a n = (54*55)/2
+		// mutations possible avec 55 photos)
+		// la proba de faire une mutation est donc de 1/n , on aura au moins une
+		// chance de faire une mutation, voir plus
+		Random r = new Random();
+		
+		for (int i = 0; i < enfants.length; i++) {
+			int indice1 = r.nextInt(solution.length);
+			int indice2 = r.nextInt(solution.length);
+			int temp = enfants[i][indice1];
+			
+			enfants[i][indice1] = enfants[i][indice2];
+			enfants[i][indice2] = temp;
+		}
 	}
 
 	/**
