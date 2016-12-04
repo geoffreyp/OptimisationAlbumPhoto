@@ -1,5 +1,7 @@
 package tools;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
@@ -76,7 +78,6 @@ public class EvolutionaryAlgorithm {
 	/**
 	 * Sélection des survivants : les mu meilleurs parents+enfants
 	 */
-
 	public static int[][] getSurvivants(int[][] parents, int[][] enfants, int nb_photos, Function<int[], Double> eval) {
 		int[][] parentsEtEnfants = new int[parents.length + enfants.length][nb_photos];
 
@@ -110,5 +111,23 @@ public class EvolutionaryAlgorithm {
 		}
 
 		return newParents;
+	}
+
+	/**
+	 * Ecrit la solution dans un fichier utilisé par le créateur de pages html
+	 */
+	public static void writeSolution(int[] s) {
+		String solution = "";
+		for (int i = 0; i < s.length; i++) {
+			solution += s[i] + " ";
+		}
+
+		try {
+			PrintWriter writer = new PrintWriter("src/data/chronologic-order.sol");
+			writer.write(solution);
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

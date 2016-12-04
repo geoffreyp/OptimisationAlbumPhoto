@@ -75,11 +75,11 @@ public abstract class LocalSearchAlgorithm {
 
 			int[][] geniteurs = EvolutionaryAlgorithm.getGeniteurs(evaluationParents, nb_geniteur, parents, nb_photos);
 
-			Function<int[], int[]> hc = (enfant) ->{
+			Function<int[], int[]> hc = (enfant) -> {
 				setSolution(enfant);
 				return hillClimberFirstImprovement(10000);
 			};
-			
+
 			int[][] enfants = EvolutionaryAlgorithm.getEnfantsAvecVariation(geniteurs, nb_photos, hc);
 
 			if (isDebugEnabled) {
@@ -103,8 +103,20 @@ public abstract class LocalSearchAlgorithm {
 				strEvalParents += "[" + i + "]=" + evaluationParents[i] + " ";
 			}
 		}
+
+		double best_eval = 100;
+		int indice_best_eval = -1;
+		for (int i = 0; i < evaluationParents.length; i++) {
+			if (best_eval > evaluationParents[i]) {
+				best_eval = evaluationParents[i];
+				indice_best_eval = i;
+			}
+		}
+
+		System.out.println("\nThe best Eval is " + best_eval + " at " + indice_best_eval + " & verif = " + eval(parents[indice_best_eval]));
+		EvolutionaryAlgorithm.writeSolution(parents[indice_best_eval]);
 	}
-	
+
 	/* Getters / Setters */
 	public int[] getSolution() {
 		return solution;
@@ -116,6 +128,5 @@ public abstract class LocalSearchAlgorithm {
 			this.solution[i] = sol[i];
 		}
 	}
-
 
 }
