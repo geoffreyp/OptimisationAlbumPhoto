@@ -11,8 +11,8 @@ import tools.HillClimber;
 
 public class AlbumPhoto extends LocalSearchAlgorithm {
 
-	private final String	photoFileName	= "/home/geoffrey/Documents/Master/RO/prj1-ro/data/info-photo.json";
-	private final String	albumFileName	= "/home/geoffrey/Documents/Master/RO/prj1-ro/data/info-album.json";
+	private final String	photoFileName	= "src/data/info-photo.json";
+	private final String	albumFileName	= "src/data/info-album.json";
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
@@ -25,7 +25,7 @@ public class AlbumPhoto extends LocalSearchAlgorithm {
 
 	/**
 	 * @author S.Verel
-	 * @category Un exemple de fonction objectif (à minimiser): distance entre
+	 * @Category Un exemple de fonction objectif (à minimiser): distance entre
 	 *           les photos pondérées par l'inverse des distances spatiales sur
 	 *           l'album Modélisaiton comme un problème d'assignement
 	 *           quadratique (QAP)
