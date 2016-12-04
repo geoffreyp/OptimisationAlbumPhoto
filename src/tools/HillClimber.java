@@ -37,12 +37,4 @@ public class HillClimber {
 
 		return solution;
 	}
-
-	public static void showSolution(int[] solution) {
-		String res = "";
-		for (int i = 0; i < solution.length; i++)
-			res += solution[i] + " ";
-
-		System.out.println(res);
-	}
 }
