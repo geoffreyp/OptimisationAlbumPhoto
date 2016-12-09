@@ -123,7 +123,7 @@ public class EvolutionaryAlgorithm {
 		}
 
 		try {
-			PrintWriter writer = new PrintWriter("src/data/chronologic-order.sol");
+			PrintWriter writer = new PrintWriter("data/chronologic-order.sol");
 			writer.write(solution);
 			writer.close();
 		} catch (FileNotFoundException e) {

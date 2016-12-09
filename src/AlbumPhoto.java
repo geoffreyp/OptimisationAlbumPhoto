@@ -11,8 +11,8 @@ import tools.HillClimber;
 
 public class AlbumPhoto extends LocalSearchAlgorithm {
 
-	private final String	photoFileName	= "src/data/info-photo.json";
-	private final String	albumFileName	= "src/data/info-album.json";
+	private final String	photoFileName	= "data/info-photo.json";
+	private final String	albumFileName	= "data/info-album.json";
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
