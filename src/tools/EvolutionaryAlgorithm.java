@@ -1,7 +1,5 @@
 package tools;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
@@ -113,21 +111,4 @@ public class EvolutionaryAlgorithm {
 		return newParents;
 	}
 
-	/**
-	 * Ecrit la solution dans un fichier utilisé par le créateur de pages html
-	 */
-	public static void writeSolution(int[] s) {
-		String solution = "";
-		for (int i = 0; i < s.length; i++) {
-			solution += s[i] + " ";
-		}
-
-		try {
-			PrintWriter writer = new PrintWriter("data/chronologic-order.sol");
-			writer.write(solution);
-			writer.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 }
