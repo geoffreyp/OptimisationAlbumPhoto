@@ -11,14 +11,14 @@ import org.json.simple.parser.ParseException;
 import algorithm.LocalSearchAlgorithm;
 import tools.HillClimber;
 
-public class AlbumPhotoRandom extends LocalSearchAlgorithm {
+public class AlbumRandom extends LocalSearchAlgorithm {
 
 	private final String	photoFileName	= "data/info-photo.json";
 	private final String	albumFileName	= "data/info-album.json";
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
-	public AlbumPhotoRandom(int taille, boolean debug) {
+	public AlbumRandom(int taille, boolean debug) {
 		super(debug);
 		computeDistances(photoFileName, albumFileName);
 		this.nb_photos = taille;
