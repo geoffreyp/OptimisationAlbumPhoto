@@ -1,3 +1,5 @@
+import album.AlbumPhotoRandom;
+
 public class Run {
 
 	public static void main(String[] args) {
@@ -14,7 +16,7 @@ public class Run {
 		// }
 		// System.out.println(best);
 
-		AlbumPhoto b = new AlbumPhoto(55, true);
+		AlbumPhotoRandom b = new AlbumPhotoRandom(55, true);
 		int nb_parents = 55;
 		int nb_geniteur = 20;
 		int nb_generations = 50;

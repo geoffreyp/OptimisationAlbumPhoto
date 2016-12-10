@@ -1,3 +1,4 @@
+package album;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,16 +8,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import algorithm.LocalSearchAlgorithm;
 import tools.HillClimber;
 
-public class AlbumPhoto extends LocalSearchAlgorithm {
+public class AlbumPhotoRandom extends LocalSearchAlgorithm {
 
 	private final String	photoFileName	= "data/info-photo.json";
 	private final String	albumFileName	= "data/info-album.json";
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
-	public AlbumPhoto(int taille, boolean debug) {
+	public AlbumPhotoRandom(int taille, boolean debug) {
 		super(debug);
 		computeDistances(photoFileName, albumFileName);
 		this.nb_photos = taille;

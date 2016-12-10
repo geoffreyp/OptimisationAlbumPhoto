@@ -1,3 +1,4 @@
+package algorithm;
 import java.util.function.Function;
 
 import tools.EvolutionaryAlgorithm;
