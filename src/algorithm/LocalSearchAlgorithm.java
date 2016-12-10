@@ -1,6 +1,7 @@
 package algorithm;
 import java.util.function.Function;
 
+import tools.Album;
 import tools.EvolutionaryAlgorithm;
 import tools.HillClimber;
 
@@ -115,7 +116,7 @@ public abstract class LocalSearchAlgorithm {
 		}
 
 		System.out.println("\nThe best Eval is " + best_eval + " at " + indice_best_eval + " & verif = " + eval(parents[indice_best_eval]));
-		EvolutionaryAlgorithm.writeSolution(parents[indice_best_eval]);
+		Album.writeSolution(parents[indice_best_eval]);
 	}
 
 	/* Getters / Setters */

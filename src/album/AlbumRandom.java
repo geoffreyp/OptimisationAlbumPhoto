@@ -9,18 +9,17 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import algorithm.LocalSearchAlgorithm;
+import tools.Album;
 import tools.HillClimber;
 
 public class AlbumRandom extends LocalSearchAlgorithm {
 
-	private final String	photoFileName	= "data/info-photo.json";
-	private final String	albumFileName	= "data/info-album.json";
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
 	public AlbumRandom(int taille, boolean debug) {
 		super(debug);
-		computeDistances(photoFileName, albumFileName);
+		computeDistances(Album.photoFileName, Album.albumFileName);
 		this.nb_photos = taille;
 		solution = HillClimber.generateShuffleSolution(taille);
 	}
