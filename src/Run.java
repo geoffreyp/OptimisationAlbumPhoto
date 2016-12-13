@@ -6,8 +6,7 @@ public class Run {
 
 	public static void main(String[] args) {
 		switch (args[0]) {
-			case "rand":
-				System.out.println("Random Album");
+			case "default":
 				double bestrand = 1000;
 				for (int i = 0; i < new Integer(args[1]); i++) {
 					AlbumTest a = new AlbumTest(55, false);
@@ -16,11 +15,11 @@ public class Run {
 					if(bestrand > a.eval(sh)){
 						bestrand = a.eval(sh);
 						Album.writeSolution(sh);
-						System.out.println("ecrit "+bestrand);
+						System.out.println("\tA new best eval is founded : "+bestrand);
 					}
 				}
 				
-				System.out.println("Evaluation : "+bestrand);
+				System.out.println("The best evaluation is "+bestrand+". The solution is located at path/chronologic-order.sol");
 				break;
 				
 			case "ahash":
