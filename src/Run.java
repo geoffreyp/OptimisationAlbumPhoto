@@ -1,5 +1,5 @@
 import album.AlbumAverageHash;
-import album.AlbumRandom;
+import album.AlbumTest;
 import tools.Album;
 
 public class Run {
@@ -10,7 +10,7 @@ public class Run {
 				System.out.println("Random Album");
 				double bestrand = 1000;
 				for (int i = 0; i < new Integer(args[1]); i++) {
-					AlbumRandom a = new AlbumRandom(55, false);
+					AlbumTest a = new AlbumTest(55, false);
 					int[] sh = a.hillClimberFirstImprovement(10000);
 					
 					if(bestrand > a.eval(sh)){
