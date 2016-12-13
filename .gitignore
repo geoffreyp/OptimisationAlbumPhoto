@@ -1,6 +1,9 @@
 # Java
 *.class
 
+# Python
+.pydevproject
+
 # Html
 *.html
 *.sol
