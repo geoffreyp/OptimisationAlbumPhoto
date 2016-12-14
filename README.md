@@ -12,7 +12,7 @@ This project was created to generate a photo album with an organization dependin
 
 
 ## How to install and use the project
-- ```# git clone git@github.com:geoffreyp/OptimisationAlbumPhoto.git ```
+- ``` git clone git@github.com:geoffreyp/OptimisationAlbumPhoto.git ```
 
 - Execute the file execute.sh with 2 parameters : the name of the evaluation function and the number of execution. 
 
@@ -22,3 +22,7 @@ This project was created to generate a photo album with an organization dependin
 
 ### List of evaluations functions
  - default
+ 
+ 
+ ## Licence
+ GNU GPL version 3
