@@ -24,5 +24,5 @@ This project was created to generate a photo album with an organization dependin
  - default
  
  
- ## Licence
- GNU GPL version 3
+## Licence
+GNU GPL version 3
