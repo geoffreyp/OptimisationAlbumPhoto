@@ -24,6 +24,20 @@ public class Album {
 		return averageHashDistance[image1][image2];
 	}
 
+	public static void printAverageHashDistance(int[] solution) {
+		String s = "";
+		int j = 0;
+		for (int i = 0; i < solution.length - 1; i++) {
+			j++;
+			s += getAverageHashDistance(solution[i], solution[i + 1])+"__";
+			if(j == 8){
+				s+="***\n";
+				j=0;
+			}
+		}
+		System.out.println("distances --> \n" + s+"\n");
+	}
+
 	/**
 	 * @author S.Verel
 	 */
@@ -57,7 +71,7 @@ public class Album {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Ecrit la solution dans un fichier utilisé par le créateur de pages html
 	 */

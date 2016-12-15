@@ -15,6 +15,9 @@ public class Run {
 					if(bestrand > a.eval(sh)){
 						bestrand = a.eval(sh);
 						Album.writeSolution(sh);
+						if(args.length > 2 && args[2].equals("true")){
+							Album.printAverageHashDistance(sh);
+						}
 						System.out.println("\tA new best eval is founded : "+bestrand);
 					}
 				}
