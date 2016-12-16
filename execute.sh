@@ -16,7 +16,7 @@ mkdir bin/
 javac -cp lib/json-simple-1.1.1.jar:src src/Run.java -d bin/
 
 echo === execute Hill Climber First Improvement $2 times...
-java -cp bin:lib/json-simple-1.1.1.jar Run $1 $2
+java -cp bin:lib/json-simple-1.1.1.jar Run $1 $2 $3
 
 echo === execute python... 
 echo The new website is generated. Have Fun !

@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,13 +31,21 @@ public class Album {
 		int j = 0;
 		for (int i = 0; i < solution.length - 1; i++) {
 			j++;
-			s += getAverageHashDistance(solution[i], solution[i + 1])+"__";
-			if(j == 8){
-				s+="***\n";
+			s += round(getAverageHashDistance(solution[i], solution[i + 1]),5)+"\t\t";
+			if(j == 6){
+				s+="\n";
 				j=0;
 			}
 		}
-		System.out.println("distances --> \n" + s+"\n");
+		System.out.println("\t\t\t===== Distances with the next photo ===== \n" + s+"\n");
+	}
+	
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 
 	/**
