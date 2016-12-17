@@ -1,7 +1,9 @@
 package algorithm;
+
 import java.util.function.Function;
 
 import tools.Album;
+import tools.IteratedLocalSearch;
 import tools.EvolutionaryAlgorithm;
 import tools.HillClimber;
 
@@ -117,6 +119,32 @@ public abstract class LocalSearchAlgorithm {
 
 		System.out.println("\nThe best Eval is " + best_eval + " at " + indice_best_eval + " & verif = " + eval(parents[indice_best_eval]));
 		Album.writeSolution(parents[indice_best_eval]);
+	}
+
+	public int[] IteratedLocalSearch(int nbEvalMax) {
+		hillClimberFirstImprovement(10000);
+		int[] best_solution = IteratedLocalSearch.copyArray(solution);
+
+		/* During the loop, in contrary to others algos, solution is not the
+		 * best solution because I use HC on the perturbed solution */
+		for (int i = 0; i < nbEvalMax; i++) {
+			// solution = perturb s_best
+			setSolution(IteratedLocalSearch.perturbation(best_solution));
+
+			// localsearch(solution) (HC)
+			hillClimberFirstImprovement(10000);
+			System.out.println(eval(getSolution()) + " < " + eval(best_solution));
+			if (eval(best_solution) > eval(getSolution())) {
+				best_solution = getSolution();
+			}
+
+		}
+
+		// solution became the best solution at the end
+		setSolution(best_solution);
+		System.out.println("Best eval : " + eval(getSolution()));
+
+		return getSolution();
 	}
 
 	/* Getters / Setters */
