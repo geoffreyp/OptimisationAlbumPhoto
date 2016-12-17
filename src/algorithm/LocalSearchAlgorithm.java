@@ -133,7 +133,7 @@ public abstract class LocalSearchAlgorithm {
 
 			// localsearch(solution) (HC)
 			hillClimberFirstImprovement(10000);
-			System.out.println(eval(getSolution()) + " < " + eval(best_solution));
+			//System.out.println(eval(getSolution()) + " < " + eval(best_solution));
 			if (eval(best_solution) > eval(getSolution())) {
 				best_solution = getSolution();
 			}

@@ -1,60 +1,85 @@
 import album.AlbumAverageHash;
 import album.AlbumTest;
+import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 
 public class Run {
+	// Arg 0 : choose the evaluation function
+	// Arg 1 : choose the algorithm
+	// Arg 2 : number of execution
+	// Arg 3 : debug mode
 
 	public static void main(String[] args) {
 		boolean debug = false;
+		LocalSearchAlgorithm a;
 		switch (args[0]) {
 			case "default":
-				
-				if(args.length > 2 && args[2].equals("true")){
+
+				if (args.length > 3 && args[3].equals("true")) {
 					debug = true;
 				}
-				System.out.println("Mode debug : "+debug);
-				
+				System.out.println("Mode debug : " + debug);
+
 				double bestrand = 1000;
-				for (int i = 0; i < new Integer(args[1]); i++) {
-					AlbumTest a = new AlbumTest(55, false);
-					int[] sh = a.hillClimberFirstImprovement(10000);
-					
-					if(bestrand > a.eval(sh)){
+				for (int i = 0; i < new Integer(args[2]); i++) {
+					a = new AlbumTest(55, false);
+					int[] sh = chooseALgorithm(args[1], a);
+
+					if (bestrand > a.eval(sh)) {
 						bestrand = a.eval(sh);
 						Album.writeSolution(sh);
-					
-						
-						if(debug){
-							System.out.println("A new best eval is founded : "+bestrand+"");
+
+						if (debug) {
+							System.out.println("A new best eval is founded : " + bestrand + "");
 							Album.printAverageHashDistance(sh);
 						}
 					}
 				}
-				
-				System.out.println("The best evaluation founded is "+bestrand+". The solution is located at path/chronologic-order.sol\n");
+
+				System.out.println("The best evaluation founded is " + bestrand + ". The solution is located at path/chronologic-order.sol\n");
 				break;
-				
+
 			case "ahash":
 				System.out.println("Average Album");
 				double best = 1000;
-				for (int i = 0; i < new Integer(args[1]); i++) {
-					AlbumAverageHash ah = new AlbumAverageHash(55, false);
-					int[] sh = ah.hillClimberFirstImprovement(10000);
-					
-					if(best > ah.eval(sh)){
-						best = ah.eval(sh);
+				for (int i = 0; i < new Integer(args[2]); i++) {
+					a = new AlbumAverageHash(55, false);
+					int[] sh = chooseALgorithm(args[1], a);
+
+					if (best > a.eval(sh)) {
+						best = a.eval(sh);
 						Album.writeSolution(sh);
-						System.out.println("ecrit "+best);
+						System.out.println("ecrit " + best);
 					}
 				}
-				
-				System.out.println("Evaluation : "+best);
-				
+
+				System.out.println("Evaluation : " + best);
+
 				break;
-			
+
 			default:
 				System.err.println("Error");
 				break;
 		}
+	}
+
+	private static int[] chooseALgorithm(String choice, LocalSearchAlgorithm a) {
+		int[] res = null;
+
+		switch (choice) {
+			case "hc":
+				res = a.hillClimberFirstImprovement(10000);
+				break;
+
+			case "ils":
+				res = a.IteratedLocalSearch(2000);
+				break;
+
+			default:
+				res = a.hillClimberFirstImprovement(10000);
+				break;
+		}
+
+		return res;
 	}
 }
