@@ -22,7 +22,7 @@ public class Run {
 
 				double bestrand = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
-					a = new AlbumAhash(55, false);
+					a = new AlbumAhash(55, debug);
 					int[] sh = getSolution(args[1], a);
 
 					if (bestrand > a.eval(sh)) {
@@ -43,7 +43,7 @@ public class Run {
 				System.out.println("Average Album");
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
-					a = new AlbumAhashSmooth(55, false);
+					a = new AlbumAhashSmooth(55, debug);
 					int[] sh = getSolution(args[1], a);
 
 					if (best > a.eval(sh)) {

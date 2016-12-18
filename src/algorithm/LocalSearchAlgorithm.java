@@ -1,5 +1,6 @@
 package algorithm;
 
+import java.util.Date;
 import java.util.function.Function;
 
 import tools.Album;
@@ -40,6 +41,9 @@ public abstract class LocalSearchAlgorithm {
 				if (eval_neighbor < best_eval_neighbor) {
 					best_eval_neighbor = eval_neighbor;
 					betterSolutionFounded = true;
+					if (isDebugEnabled) {
+						Album.writeCsvFile("hc-" + new Date().toString().replaceAll(" ", "-") + ".csv", nbEval, best_eval_neighbor);
+					}
 				}
 			} while (!betterSolutionFounded && nbEval < nbEvalMax);
 
@@ -48,8 +52,6 @@ public abstract class LocalSearchAlgorithm {
 				solution = neighbor;
 			}
 		}
-		if (isDebugEnabled)
-			System.out.println("________HC eval = " + eval);
 
 		return solution;
 	}
@@ -128,12 +130,15 @@ public abstract class LocalSearchAlgorithm {
 		/* During the loop, in contrary to others algos, solution is not the
 		 * best solution because I use HC on the perturbed solution */
 		for (int i = 0; i < nbEvalMax; i++) {
-			// solution = perturb s_best
 			setSolution(IteratedLocalSearch.perturbation(best_solution));
 
-			// localsearch(solution) (HC)
+			if (isDebugEnabled) {
+				Album.writeCsvFile("ils.csv", i, eval(getSolution()));
+			}
+
 			hillClimberFirstImprovement(10000);
-			//System.out.println(eval(getSolution()) + " < " + eval(best_solution));
+			// System.out.println(eval(getSolution()) + " < " +
+
 			if (eval(best_solution) > eval(getSolution())) {
 				best_solution = getSolution();
 			}
