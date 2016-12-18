@@ -1,5 +1,5 @@
-import album.AlbumAverageHash;
-import album.AlbumTest;
+import album.AlbumAhash;
+import album.AlbumAhashSmooth;
 import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 
@@ -22,8 +22,8 @@ public class Run {
 
 				double bestrand = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
-					a = new AlbumTest(55, false);
-					int[] sh = chooseALgorithm(args[1], a);
+					a = new AlbumAhash(55, false);
+					int[] sh = getSolution(args[1], a);
 
 					if (bestrand > a.eval(sh)) {
 						bestrand = a.eval(sh);
@@ -43,8 +43,8 @@ public class Run {
 				System.out.println("Average Album");
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
-					a = new AlbumAverageHash(55, false);
-					int[] sh = chooseALgorithm(args[1], a);
+					a = new AlbumAhashSmooth(55, false);
+					int[] sh = getSolution(args[1], a);
 
 					if (best > a.eval(sh)) {
 						best = a.eval(sh);
@@ -63,10 +63,10 @@ public class Run {
 		}
 	}
 
-	private static int[] chooseALgorithm(String choice, LocalSearchAlgorithm a) {
+	private static int[] getSolution(String algorithm, LocalSearchAlgorithm a) {
 		int[] res = null;
 
-		switch (choice) {
+		switch (algorithm) {
 			case "hc":
 				res = a.hillClimberFirstImprovement(10000);
 				break;

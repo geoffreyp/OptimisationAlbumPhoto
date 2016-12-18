@@ -12,12 +12,12 @@ import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 import tools.HillClimber;
 
-public class AlbumTest extends LocalSearchAlgorithm {
+public class AlbumAhash extends LocalSearchAlgorithm {
 
 	private double[][]		photoDist;
 	private double[][]		albumInvDist;
 
-	public AlbumTest(int taille, boolean debug) {
+	public AlbumAhash(int taille, boolean debug) {
 		super(debug);
 		computeDistances(Album.photoFileName, Album.albumFileName);
 		this.nb_photos = taille;

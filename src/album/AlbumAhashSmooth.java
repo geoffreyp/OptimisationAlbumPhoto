@@ -4,9 +4,9 @@ import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 import tools.HillClimber;
 
-public class AlbumAverageHash extends LocalSearchAlgorithm {
+public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
-	public AlbumAverageHash(int taille, boolean debug) {
+	public AlbumAhashSmooth(int taille, boolean debug) {
 		super(debug);
 		this.nb_photos = taille;
 		solution = HillClimber.generateShuffleSolution(taille);

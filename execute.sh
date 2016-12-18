@@ -4,8 +4,9 @@
 #	Param 2 : Number of execution    #
 ######################################
 
-if [ -z "$1" -o -z "$2" -o -z "$3"]
+if [ -z "$1" -o -z "$2" -o -z "$3" ]
 	then
+		echo Error : required parameters are missing
 		echo The first param is the type of evaluation
 		echo The second is the algorithm name
 		echo The third is the number of execution of the algorithm
