@@ -4,6 +4,7 @@ This project was created to generate a photo album with an organization dependin
 
 ## Algorithms used
  - Hill Climber First Improvement
+ - Iterated Local Search
  - Evolutionnary Algorithm
 
 
@@ -12,11 +13,15 @@ This project was created to generate a photo album with an organization dependin
 
 
 ## How to install and use the project
-- ``` git clone git@github.com:geoffreyp/OptimisationAlbumPhoto.git ```
+- ``` ~$ git clone git@github.com:geoffreyp/OptimisationAlbumPhoto.git ```
 
-- Execute the file execute.sh with 2 parameters : the name of the evaluation function and the number of execution. 
+- Execute the file execute.sh with these parameters : 
+ - the name of the evaluation function
+ - the name of the algorithm
+ - the number of execution
+ - Optional : boolean to use debug mode
 
-``` ./execute.sh evaluation_function number_of_execution  ```
+``` ~$ ./execute.sh evaluation_function algorithm number_of_execution  ```
 
 - You can open in a web browser the website in the folder html/ 
 
