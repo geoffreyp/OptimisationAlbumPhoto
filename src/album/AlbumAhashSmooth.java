@@ -53,8 +53,22 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
 		return sum;
 	}
+	
+	public double getTagWeight(int photo1, int photo2){
+		double w = 0;
+		
+		for (int i = 0; i < photoTags[photo1].size(); i++) {
+			for (int j = 0; j < photoTags[photo2].size(); j++) {
+				if(photoTags[photo1].get(i).equals(photoTags[photo1].get(j)))
+					w++;
+			}
+		}
+		
+		return w;
+	}
 
 	/**
+	 * @author geoffrey
 	 * Keep tags of photos with a high probability
 	 */
 	@SuppressWarnings("unchecked")
