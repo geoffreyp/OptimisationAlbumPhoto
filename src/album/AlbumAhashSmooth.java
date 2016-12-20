@@ -1,7 +1,9 @@
 package album;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -12,18 +14,17 @@ import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 import tools.HillClimber;
 
-/*
- * WIP
- * TODO : add to the evaluation function a system to sort photo on a page
- */
+/* WIP TODO : add to the evaluation function a system to sort photo on a page */
 public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
-	private double[][]		photoDist;
-	private double[][]		albumInvDist;
+	private double[][]			photoDist;
+	private double[][]			albumInvDist;
+	private ArrayList<String>[]	photoTags;
 
 	public AlbumAhashSmooth(int taille, boolean debug) {
 		super(debug);
 		computeDistances(Album.photoFileName, Album.albumFileName);
+		computePhotosTags();
 		this.nb_photos = taille;
 		solution = HillClimber.generateShuffleSolution(taille);
 	}
@@ -51,6 +52,47 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 		}
 
 		return sum;
+	}
+
+	/**
+	 * Keep tags of photos with a high probability
+	 */
+	@SuppressWarnings("unchecked")
+	public void computePhotosTags() {
+		try {
+			FileReader reader = new FileReader(Album.photoFileName);
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(reader);
+			JSONArray photos = (JSONArray) obj;
+
+			photoTags = new ArrayList[photos.size()];
+
+			for (int indicePhoto = 0; indicePhoto < photos.size(); indicePhoto++) {
+				JSONObject photo = (JSONObject) photos.get(indicePhoto);
+				JSONObject tags = (JSONObject) photo.get("tags");
+				JSONArray tagsClasses = (JSONArray) tags.get("classes");
+				JSONArray tagsProbs = (JSONArray) tags.get("probs");
+
+				photoTags[indicePhoto] = new ArrayList<>();
+
+				for (int indicetag = 0; indicetag < tagsClasses.size(); indicetag++) {
+					double prob = (double) tagsProbs.get(indicetag);
+					String tag = (String) tagsClasses.get(indicetag);
+					if (prob > 0.97 && !tag.equals("nobody")) {
+						photoTags[indicePhoto].add(tag);
+						//System.out.println("Photo "+indicePhoto+" => "+tag);
+					}
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
