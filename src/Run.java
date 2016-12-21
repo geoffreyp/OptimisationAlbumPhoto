@@ -39,8 +39,7 @@ public class Run {
 				System.out.println("The best evaluation founded is " + bestrand + ". The solution is located at path/chronologic-order.sol\n");
 				break;
 
-			case "ahash":
-				System.out.println("Average Album");
+			case "tags":
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
 					a = new AlbumAhashSmooth(55, debug);

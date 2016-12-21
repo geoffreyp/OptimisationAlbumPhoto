@@ -47,29 +47,42 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
 		for (int i = 0; i < albumInvDist.length; i++) {
 			for (int j = i + 1; j < albumInvDist.length; j++) {
-				sum += photoDist[solution[i]][solution[j]] * albumInvDist[i][j];
+				sum += photoDist[solution[i]][solution[j]] * albumInvDist[i][j] * getTagWeight(i, j);
 			}
 		}
 
 		return sum;
 	}
-	
-	public double getTagWeight(int photo1, int photo2){
+
+	public double getTagWeight(int photo1, int photo2) {
 		double w = 0;
-		
-		for (int i = 0; i < photoTags[photo1].size(); i++) {
-			for (int j = 0; j < photoTags[photo2].size(); j++) {
-				if(photoTags[photo1].get(i).equals(photoTags[photo1].get(j)))
+		int higher = 0, lower = 0;
+
+		if (photoTags[photo1].size() < photoTags[photo2].size()) {
+			higher = photo2;
+			lower = photo1;
+		}
+		else {
+			lower = photo2;
+			higher = photo1;
+		}
+
+		for (int ilow = 0; ilow < photoTags[lower].size(); ilow++) {
+			for (int ihigh = 0; ihigh < photoTags[higher].size(); ihigh++) {
+				if (photoTags[lower].get(ilow).equals(photoTags[higher].get(ihigh))) {
+					//System.out.println(w + "--> " + photoTags[lower].get(ilow));
 					w++;
+				}
 			}
 		}
-		
-		return w;
+		if (w == 0)
+			return 1;
+		else
+			return (1 / (w * 10));
 	}
 
 	/**
-	 * @author geoffrey
-	 * Keep tags of photos with a high probability
+	 * @author geoffrey Keep tags of photos with a high probability
 	 */
 	@SuppressWarnings("unchecked")
 	public void computePhotosTags() {
@@ -94,7 +107,7 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 					String tag = (String) tagsClasses.get(indicetag);
 					if (prob > 0.97 && !tag.equals("nobody")) {
 						photoTags[indicePhoto].add(tag);
-						//System.out.println("Photo "+indicePhoto+" => "+tag);
+						// System.out.println("Photo "+indicePhoto+" => "+tag);
 					}
 				}
 			}
