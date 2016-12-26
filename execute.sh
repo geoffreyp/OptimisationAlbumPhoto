@@ -24,4 +24,6 @@ echo === execute $2 algorithm $3 times...
 java -cp bin:lib/json-simple-1.1.1.jar Run $1 $2 $3 $4 $5
 
 echo === execute python... 
+python src/buildAlbum.py
+
 echo The new website is generated. Have Fun !
