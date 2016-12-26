@@ -7,6 +7,7 @@ public class Run {
 	// Arg 0 : choose the evaluation function
 	// Arg 1 : choose the algorithm
 	// Arg 2 : number of execution
+	// Arg 3 : number of iteration for the ILS algorithm
 	// Arg 3 : debug mode
 
 	public static void main(String[] args) {
@@ -15,7 +16,7 @@ public class Run {
 		switch (args[0]) {
 			case "default":
 
-				if (args.length > 3 && args[3].equals("true")) {
+				if (args.length > 4 && args[4].equals("true")) {
 					debug = true;
 				}
 				System.out.println("Mode debug : " + debug);
@@ -23,7 +24,7 @@ public class Run {
 				double bestrand = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
 					a = new AlbumAhash(55, debug);
-					int[] sh = getSolution(args[1], a);
+					int[] sh = getSolution(args[1], a, new Integer(args[3]));
 
 					if (bestrand > a.eval(sh)) {
 						bestrand = a.eval(sh);
@@ -40,10 +41,16 @@ public class Run {
 				break;
 
 			case "tags":
+				
+				if (args.length > 4 && args[4].equals("true")) {
+					debug = true;
+				}
+				System.out.println("Mode debug : " + debug);
+				
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
 					a = new AlbumAhashSmooth(55, debug);
-					int[] sh = getSolution(args[1], a);
+					int[] sh = getSolution(args[1], a, new Integer(args[3]));
 
 					if (best > a.eval(sh)) {
 						best = a.eval(sh);
@@ -62,7 +69,7 @@ public class Run {
 		}
 	}
 
-	private static int[] getSolution(String algorithm, LocalSearchAlgorithm a) {
+	private static int[] getSolution(String algorithm, LocalSearchAlgorithm a, int ilsIteration) {
 		int[] res = null;
 
 		switch (algorithm) {
@@ -71,7 +78,7 @@ public class Run {
 				break;
 
 			case "ils":
-				res = a.IteratedLocalSearch(2000);
+				res = a.IteratedLocalSearch(ilsIteration);
 				break;
 
 			default:
