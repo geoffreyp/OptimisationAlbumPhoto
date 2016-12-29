@@ -14,7 +14,6 @@ import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 import tools.HillClimber;
 
-/* WIP TODO : add to the evaluation function a system to sort photo on a page */
 public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
 	private double[][]			photoDist;
@@ -30,16 +29,11 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 	}
 
 	/**
-	 * @author S.Verel
-	 * @Category Un exemple de fonction objectif (à minimiser): distance entre
-	 *           les photos pondérées par l'inverse des distances spatiales sur
-	 *           l'album Modélisaiton comme un problème d'assignement
-	 *           quadratique (QAP)
-	 *
-	 *           Dans cette fonction objectif, pas de prise en compte d'un effet
-	 *           de page (harmonie/cohérence de la page) par le choix de
-	 *           distance, pas d'intéraction entre les photos sur des
-	 *           différentes pages
+	 * @author Geoffrey Pruvost
+	 * @Category This fitness function multiply the ahash distance with the
+	 *           interval between two photos on the album and with the tag
+	 *           coefficient
+	 * 
 	 */
 	@Override
 	public double eval(int[] solution) {
@@ -47,14 +41,21 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 
 		for (int i = 0; i < albumInvDist.length; i++) {
 			for (int j = i + 1; j < albumInvDist.length; j++) {
-				sum += photoDist[solution[i]][solution[j]] * albumInvDist[i][j] * getTagWeight(i, j);
+				sum += photoDist[solution[i]][solution[j]] * albumInvDist[i][j] * getTagCoefficient(i, j);
 			}
 		}
 
 		return sum;
 	}
 
-	public double getTagWeight(int photo1, int photo2) {
+	/**
+	 * 
+	 * @author Geoffrey Pruvost
+	 * @Category Generate a coefficient between two photos depending of photo's
+	 *           tags
+	 * 
+	 */
+	public double getTagCoefficient(int photo1, int photo2) {
 		double w = 0;
 		int higher = 0, lower = 0;
 
@@ -70,7 +71,8 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 		for (int ilow = 0; ilow < photoTags[lower].size(); ilow++) {
 			for (int ihigh = 0; ihigh < photoTags[higher].size(); ihigh++) {
 				if (photoTags[lower].get(ilow).equals(photoTags[higher].get(ihigh))) {
-					//System.out.println(w + "--> " + photoTags[lower].get(ilow));
+					// System.out.println(w + "--> " +
+					// photoTags[lower].get(ilow));
 					w++;
 				}
 			}
@@ -82,7 +84,8 @@ public class AlbumAhashSmooth extends LocalSearchAlgorithm {
 	}
 
 	/**
-	 * @author geoffrey Keep tags of photos with a high probability
+	 * @author geoffrey
+	 * @category Keep tags of photos with a high probability
 	 */
 	@SuppressWarnings("unchecked")
 	public void computePhotosTags() {
