@@ -1,5 +1,5 @@
 import album.AlbumAhash;
-import album.AlbumAhashSmooth;
+import album.AlbumAhashTags;
 import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 
@@ -49,7 +49,7 @@ public class Run {
 				
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
-					a = new AlbumAhashSmooth(55, debug);
+					a = new AlbumAhashTags(55, debug);
 					int[] sh = getSolution(args[1], a, new Integer(args[3]));
 
 					if (best > a.eval(sh)) {

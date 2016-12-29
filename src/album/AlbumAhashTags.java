@@ -14,13 +14,13 @@ import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 import tools.HillClimber;
 
-public class AlbumAhashSmooth extends LocalSearchAlgorithm {
+public class AlbumAhashTags extends LocalSearchAlgorithm {
 
 	private double[][]			photoDist;
 	private double[][]			albumInvDist;
 	private ArrayList<String>[]	photoTags;
 
-	public AlbumAhashSmooth(int taille, boolean debug) {
+	public AlbumAhashTags(int taille, boolean debug) {
 		super(debug);
 		computeDistances(Album.photoFileName, Album.albumFileName);
 		computePhotosTags();
