@@ -25,7 +25,7 @@ public abstract class LocalSearchAlgorithm {
 	 */
 	public int[] hillClimberFirstImprovement(int nbEvalMax) {
 		double eval = eval(solution);
-		double best_eval_neighbor = 100;
+		double best_eval_neighbor = 100000;
 		int nbEval = 0;
 
 		while (nbEval < nbEvalMax) {
@@ -131,13 +131,11 @@ public abstract class LocalSearchAlgorithm {
 		 * best solution because I use HC on the perturbed solution */
 		for (int i = 0; i < nbEvalMax; i++) {
 			setSolution(IteratedLocalSearch.perturbation(best_solution));
-
 			if (isDebugEnabled) {
 				Album.writeCsvFile("ils.csv", i, eval(getSolution()));
 			}
 
 			hillClimberFirstImprovement(10000);
-			// System.out.println(eval(getSolution()) + " < " +
 
 			if (eval(best_solution) > eval(getSolution())) {
 				best_solution = getSolution();

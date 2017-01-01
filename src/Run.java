@@ -1,5 +1,6 @@
 import album.AlbumAhash;
 import album.AlbumAhashTags;
+import album.AlbumGreyAverage;
 import algorithm.LocalSearchAlgorithm;
 import tools.Album;
 
@@ -41,12 +42,12 @@ public class Run {
 				break;
 
 			case "tags":
-				
+
 				if (args.length > 4 && args[4].equals("true")) {
 					debug = true;
 				}
 				System.out.println("Mode debug : " + debug);
-				
+
 				double best = 1000;
 				for (int i = 0; i < new Integer(args[2]); i++) {
 					a = new AlbumAhashTags(55, debug);
@@ -60,6 +61,29 @@ public class Run {
 				}
 
 				System.out.println("Evaluation : " + best);
+
+				break;
+
+			case "greyavg":
+
+				if (args.length > 4 && args[4].equals("true")) {
+					debug = true;
+				}
+				System.out.println("Mode debug : " + debug);
+
+				double bestGrey = 100000;
+				for (int i = 0; i < new Integer(args[2]); i++) {
+					a = new AlbumGreyAverage(55, debug);
+					int[] sh = getSolution(args[1], a, new Integer(args[3]));
+
+					if (bestGrey > a.eval(sh)) {
+						bestGrey = a.eval(sh);
+						Album.writeSolution(sh);
+						System.out.println("ecrit " + bestGrey);
+					}
+				}
+
+				System.out.println("Evaluation : " + bestGrey);
 
 				break;
 
