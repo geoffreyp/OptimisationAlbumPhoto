@@ -8,6 +8,7 @@ This project was created to generate a photo album with an organization dependin
 ___
 ## How to install the project
 - ``` ~$ git clone git@github.com:geoffreyp/OptimisationAlbumPhoto.git ```
+
 ___
 ## How to use the project
 Execute the file execute.sh with these parameters : 
