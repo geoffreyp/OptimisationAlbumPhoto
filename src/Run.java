@@ -9,14 +9,14 @@ public class Run {
 	// Arg 1 : choose the algorithm
 	// Arg 2 : number of execution
 	// Arg 3 : number of iteration for the ILS algorithm
-	// Arg 3 : debug mode
+	// Arg 4 : debug mode
 
 	public static void main(String[] args) {
 		boolean debug = false;
 		LocalSearchAlgorithm a;
 		switch (args[0]) {
-			case "default":
-
+			case "ahash":
+				System.out.println("Function : ahash");
 				if (args.length > 4 && args[4].equals("true")) {
 					debug = true;
 				}
@@ -30,7 +30,7 @@ public class Run {
 					if (bestrand > a.eval(sh)) {
 						bestrand = a.eval(sh);
 						Album.writeSolution(sh);
-
+						System.out.println("Write the solution " + bestrand);
 						if (debug) {
 							System.out.println("A new best eval is founded : " + bestrand + "");
 							Album.printAverageHashDistance(sh);
@@ -42,7 +42,7 @@ public class Run {
 				break;
 
 			case "tags":
-
+				System.out.println("Function : tags");
 				if (args.length > 4 && args[4].equals("true")) {
 					debug = true;
 				}
@@ -56,7 +56,7 @@ public class Run {
 					if (best > a.eval(sh)) {
 						best = a.eval(sh);
 						Album.writeSolution(sh);
-						System.out.println("ecrit " + best);
+						System.out.println("Write the solution " + best);
 					}
 				}
 
@@ -65,7 +65,7 @@ public class Run {
 				break;
 
 			case "greyavg":
-
+				System.out.println("Function : geyavg");
 				if (args.length > 4 && args[4].equals("true")) {
 					debug = true;
 				}
@@ -79,7 +79,7 @@ public class Run {
 					if (bestGrey > a.eval(sh)) {
 						bestGrey = a.eval(sh);
 						Album.writeSolution(sh);
-						System.out.println("ecrit " + bestGrey);
+						System.out.println("Write the solution " + bestGrey);
 					}
 				}
 
