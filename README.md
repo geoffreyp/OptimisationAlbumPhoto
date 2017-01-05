@@ -15,7 +15,7 @@ Execute the file execute.sh with these parameters :
  - Required : the name of the evaluation function
  - Required : the name of the algorithm
  - Required : the number of execution
- - Required : the number of iteration for ILS algorithm, use 0 for other algorithm
+ - Required : the number of iteration for ILS algorithm (**the parameter is only use with ILS, it is ignored for others but required so use 0 for Hill Climber for example**)
  - Optional : boolean to use debug mode
 
 ``` ~$ ./execute.sh <evaluation_function> <algorithm> <nb_of_execution> <nb_of_ILS_iteration> <debug_mode> ```
@@ -30,7 +30,7 @@ Example :
 - For launch 40 times a Hill Climber with greyavg function in debug mode : <br>
 ``` ~$ ./execute.sh greyavg hc 40 0 true```
 
-You can now open in yout favorite web browser the website in the folder html/ 
+You can now open in your favorite web browser the website in the folder html/ 
 
 ____
 ## Algorithms used
